@@ -3,6 +3,7 @@ import { createBrowserRouter } from "react-router-dom";
 import { RouterProvider } from "react-router-dom";
 import ProductsPage from "./pages/ProductsPage";
 import CartPage from "./pages/CartPage";
+import CartContextProvider from "./store/cartContext";
 
 const router = createBrowserRouter([
   { path: "/", element: <ProductsPage /> },
@@ -11,7 +12,11 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <CartContextProvider>
+      <RouterProvider router={router} />
+    </CartContextProvider>
+  );
 }
 
 export default App;

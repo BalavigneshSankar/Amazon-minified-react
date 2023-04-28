@@ -314,12 +314,26 @@ ul {
 
 .cart-icon-container {
   padding: 1.2rem;
+  position: relative;
 }
 
 .cart-icon {
   color: var(--white);
   width: 2.4rem;
   height: 2.4rem;
+}
+
+.cart-items-indicator {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.cart-items-indicator p {
+  /* line-height: 2.4rem; */
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--primary-500);
 }
 
 /* Main */
@@ -371,7 +385,6 @@ main .main-container {
   object-fit: cover;
   border-top-left-radius: var(--borderRadius);
   border-top-right-radius: var(--borderRadius);
-  transition: var(--transition);
 }
 
 .product-rating {
@@ -465,8 +478,14 @@ main .main-container {
   color: var(--primary-300);
 }
 
+.btn-decrement:disabled,
+.btn-increment:disabled {
+  color: var(--grey-300);
+  cursor: initial;
+}
+
 .input-quantity {
-  width: 3.2rem;
+  width: 4.8rem;
   padding: 4px;
   font-size: 1.8rem;
   color: var(--grey-500);
@@ -569,6 +588,101 @@ main .main-container {
   border: none;
   cursor: pointer;
   transition: var(--transition);
+}
+
+/* Cart */
+.cart {
+  padding: 2.4rem 3.2rem;
+  background: var(--grey-200);
+}
+
+.cart .main-container {
+  background: var(--white);
+  width: 75vw;
+  margin: 0 auto;
+  padding: 2.4rem 1.6rem;
+}
+
+.cart .title {
+  font-size: 3rem;
+  font-weight: 500;
+  text-align: start;
+  border-bottom: 1px solid var(--grey-300);
+  padding-bottom: 1.6rem;
+  margin-bottom: 2.4rem;
+}
+
+.cart-item {
+  display: grid;
+  grid-template-columns: 2fr 5fr 1fr 1fr 1fr;
+  gap: 2.4rem;
+  align-items: start;
+  margin-bottom: 2.4rem;
+  border-bottom: 1px solid var(--grey-300);
+  padding: 1.6rem;
+}
+
+.cart-item:last-child {
+  margin-bottom: 0;
+}
+
+.cart-item .product-img-container {
+  width: 85%;
+  height: 12.8rem;
+}
+
+.cart-item .product-img {
+  border-radius: var(--borderRadius);
+}
+
+.cart-item .product-info {
+  padding: 0;
+}
+
+.product-price-container {
+  justify-self: center;
+}
+
+.btn-delete {
+  border: none;
+  background: transparent;
+}
+
+.delete-icon {
+  width: 2rem;
+  height: 2rem;
+  color: var(--primary-500);
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.delete-icon:hover {
+  color: var(--primary-700);
+}
+
+.total-price-container {
+  font-size: 2rem;
+  font-weight: 600;
+  padding: 1.6rem;
+  display: grid;
+  grid-template-columns: 2fr 6fr 1fr 1fr;
+  gap: 2.4rem;
+}
+
+.total-price-title {
+  grid-column: 2 / span 1;
+  text-align: end;
+}
+
+.total-price-value {
+  grid-column: 3 / span 1;
+  justify-self: center;
+}
+
+.total-price-value span {
+  font-size: 1.2rem;
+  color: var(--grey-500);
+  margin: 2px;
 }
 
 /* Remove arrows <input type="number" /> */

@@ -1,8 +1,17 @@
 import logo from "../../assets/amazon-logo.png";
 import { FiShoppingCart } from "react-icons/fi";
 import { BsSearch } from "react-icons/bs";
+import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { CartContext } from "../../store/cartContext";
 
 const Header = () => {
+  const cartCtx = useContext(CartContext);
+
+  const noOfCartItems = cartCtx.cartItems
+    .map((item) => item.quantity)
+    .reduce((total, quantity) => total + quantity, 0);
+
   return (
     <>
       <div className="logo-container">
@@ -20,7 +29,12 @@ const Header = () => {
         />
       </form>
       <div className="cart-icon-container">
-        <FiShoppingCart className="cart-icon" />
+        <Link to="/cart">
+          <FiShoppingCart className="cart-icon" />
+        </Link>
+        <div className="cart-items-indicator">
+          <p>{noOfCartItems}</p>
+        </div>
       </div>
     </>
   );

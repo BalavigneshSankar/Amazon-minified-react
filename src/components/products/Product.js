@@ -1,14 +1,21 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { AiFillStar } from "react-icons/ai";
+import { CartContext } from "../../store/cartContext";
 
-const Product = ({ id, thumbnail, title, description, rating, price }) => {
+const Product = ({
+  id,
+  thumbnail,
+  title,
+  rating,
+  price,
+  description,
+  stock,
+}) => {
+  const cartCtx = useContext(CartContext);
   const [quantity, setQuantity] = useState(1);
 
   // Rating fixed to 2 decimal places
   const ratingCorrected = rating.toFixed(1);
-
-  // Price calculated based on quantity
-  const updatedPrice = price * quantity;
 
   // Description trimmed and contionally added Read more button
   let descriptionTrimmed = description;
@@ -32,7 +39,8 @@ const Product = ({ id, thumbnail, title, description, rating, price }) => {
           <h3 className="product-title">{title}</h3>
           <p className="product-price">
             <span>$</span>
-            {updatedPrice}
+            {price}
+            <span>/unit</span>
           </p>
         </div>
         <p className="product-description">
@@ -50,7 +58,7 @@ const Product = ({ id, thumbnail, title, description, rating, price }) => {
             type="button"
             className="btn-decrement"
             onClick={() => setQuantity((quantity) => quantity - 1)}
-            style={quantity === 1 ? { color: "red" } : ""}
+            disabled={quantity === 1 ? true : false}
           >
             -
           </button>
@@ -64,11 +72,26 @@ const Product = ({ id, thumbnail, title, description, rating, price }) => {
             type="button"
             className="btn-increment"
             onClick={() => setQuantity((quantity) => quantity + 1)}
+            disabled={quantity === stock ? true : false}
           >
             +
           </button>
         </div>
-        <button type="button" className="btn">
+        <button
+          type="button"
+          className="btn"
+          onClick={() => {
+            cartCtx.updateCartHandler({
+              id,
+              thumbnail,
+              title,
+              description,
+              price,
+              quantity,
+              stock,
+            });
+          }}
+        >
           Add to cart
         </button>
       </div>
