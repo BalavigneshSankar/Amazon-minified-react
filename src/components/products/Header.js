@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { CartContext } from "../../store/cartContext";
 
-const Header = () => {
+const Header = ({ onSearch }) => {
   const cartCtx = useContext(CartContext);
 
   const noOfCartItems = cartCtx.cartItems
@@ -26,10 +26,14 @@ const Header = () => {
           id="search"
           className="input-search"
           placeholder="Search Amazon.in"
+          onChange={(e) => {
+            const enteredString = e.target.value.trim();
+            onSearch(enteredString);
+          }}
         />
       </form>
       <div className="cart-icon-container">
-        <Link to="/cart">
+        <Link to="/cart" className="link">
           <FiShoppingCart className="cart-icon" />
         </Link>
         <div className="cart-items-indicator">

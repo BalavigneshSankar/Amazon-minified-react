@@ -19,8 +19,16 @@ const CartPage = () => {
   return (
     <div className="cart">
       <div className="main-container">
-        <h2 className="title">Shopping Cart</h2>
-        <Link to="/products">Products</Link>
+        <div className="title-link-container">
+          <h2 className="title">
+            {cartItems.length > 0
+              ? "Shopping Cart"
+              : "Your Amazon Cart is empty."}
+          </h2>
+          <Link to="/products" className="link">
+            &#8592; Go to Products Page
+          </Link>
+        </div>
         <div className="cart-items-container">
           {cartItems.map((item) => (
             <CartItem key={item.id} {...item} />

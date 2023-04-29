@@ -2,14 +2,14 @@ import { createContext, useState } from "react";
 
 export const CartContext = createContext({
   cartItems: [],
-  updateCartHandler: () => {},
+  cartItemsUpdateHandler: () => {},
   quantityUpdateHandler: () => [],
 });
 
 const CartContextProvider = (props) => {
   const [cartItems, setCartItems] = useState([]);
 
-  const updateCartHandler = (item) => {
+  const cartItemsUpdateHandler = (item) => {
     // Check if item already in cart items
     const cartItemIndex = cartItems.findIndex(
       (cartItem) => cartItem.id === item.id
@@ -40,12 +40,21 @@ const CartContextProvider = (props) => {
     });
   };
 
+  const itemDeleteHandler = (id) => {
+    // Delete particular item
+    setCartItems((cartItems) => {
+      const updatedCartItems = structuredClone(cartItems);
+      return updatedCartItems.filter((cartItem) => cartItem.id !== id);
+    });
+  };
+
   return (
     <CartContext.Provider
       value={{
         cartItems,
-        updateCartHandler,
+        cartItemsUpdateHandler,
         quantityUpdateHandler,
+        itemDeleteHandler,
       }}
     >
       {props.children}

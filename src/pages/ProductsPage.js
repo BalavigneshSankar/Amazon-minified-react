@@ -13,6 +13,7 @@ const ProductsPage = () => {
     maximumPrice: null,
     isRangeSet: false,
   });
+  const [searchString, setSearchString] = useState("");
 
   const filterByCategoryHandler = (e) => {
     if (e.target.checked) {
@@ -38,6 +39,10 @@ const ProductsPage = () => {
       maximumPrice: null,
       isRangeSet: false,
     });
+  };
+
+  const itemsSearchHandler = (enteredString) => {
+    setSearchString(enteredString);
   };
 
   const fetchItems = async () => {
@@ -71,6 +76,7 @@ const ProductsPage = () => {
           items={items}
           categories={categories}
           minMaxPrice={minMaxPrice}
+          searchString={searchString}
         />
       </div>
     );
@@ -80,7 +86,7 @@ const ProductsPage = () => {
     <>
       <header className="header">
         <div className="main-container">
-          <Header />
+          <Header onSearch={itemsSearchHandler} />
         </div>
       </header>
       <main>{content}</main>

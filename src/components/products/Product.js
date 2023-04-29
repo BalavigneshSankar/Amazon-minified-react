@@ -8,21 +8,26 @@ const Product = ({
   title,
   rating,
   price,
+  category,
   description,
   stock,
 }) => {
   const cartCtx = useContext(CartContext);
   const [quantity, setQuantity] = useState(1);
+  const [readMore, setReadMore] = useState(false);
 
   // Rating fixed to 2 decimal places
   const ratingCorrected = rating.toFixed(1);
 
-  // Description trimmed and contionally added Read more button
-  let descriptionTrimmed = description;
-  let moreToRead = false;
-  if (description.length > 50) {
-    descriptionTrimmed = `${description.slice(0, 50)}...`;
-    moreToRead = true;
+  let descriptionTrimmed;
+  if (!readMore) {
+    if (description.length > 50) {
+      descriptionTrimmed = `${description.slice(0, 50)}...`;
+    } else {
+      descriptionTrimmed = description;
+    }
+  } else {
+    descriptionTrimmed = description;
   }
 
   return (
@@ -43,11 +48,20 @@ const Product = ({
             <span>/unit</span>
           </p>
         </div>
+        <div className="product-category">
+          Category: <span>{category}</span>
+        </div>
         <p className="product-description">
           {descriptionTrimmed}
-          {moreToRead && (
-            <button type="button" className="btn-read-more">
-              Read more
+          {description.length > 50 && (
+            <button
+              type="button"
+              className="btn-read-more"
+              onClick={() => {
+                setReadMore((readMore) => !readMore);
+              }}
+            >
+              {readMore ? "Show less" : "Read more"}
             </button>
           )}
         </p>
@@ -72,7 +86,7 @@ const Product = ({
             type="button"
             className="btn-increment"
             onClick={() => setQuantity((quantity) => quantity + 1)}
-            disabled={quantity === stock ? true : false}
+            disabled={quantity >= stock ? true : false}
           >
             +
           </button>
@@ -81,7 +95,7 @@ const Product = ({
           type="button"
           className="btn"
           onClick={() => {
-            cartCtx.updateCartHandler({
+            cartCtx.cartItemsUpdateHandler({
               id,
               thumbnail,
               title,

@@ -11,7 +11,7 @@ const CartItem = ({
   quantity,
   stock,
 }) => {
-  const { quantityUpdateHandler } = useContext(CartContext);
+  const { quantityUpdateHandler, itemDeleteHandler } = useContext(CartContext);
 
   // Price for selected no. of units
   const updatedPrice = price * quantity;
@@ -64,7 +64,12 @@ const CartItem = ({
           {updatedPrice}
         </p>
       </div>
-      <button className="btn-delete">
+      <button
+        className="btn-delete"
+        onClick={() => {
+          itemDeleteHandler(id);
+        }}
+      >
         <RiDeleteBinLine className="delete-icon" />
       </button>
     </article>

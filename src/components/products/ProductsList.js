@@ -1,6 +1,6 @@
 import Product from "./Product";
 
-const ProductsList = ({ items, categories, minMaxPrice }) => {
+const ProductsList = ({ items, categories, minMaxPrice, searchString }) => {
   // Filter by category
   let filteredByCategory;
   if (categories.length === 0) {
@@ -23,9 +23,32 @@ const ProductsList = ({ items, categories, minMaxPrice }) => {
     );
   }
 
+  // Filter by item name
+  let filteredBySearchString;
+  if (!searchString) {
+    filteredBySearchString = filteredByPriceRange;
+  } else {
+    // 'c am' => ['c', 'a', 'm']
+    const searchStringAsArray = searchString
+      .split("")
+      .filter((character) => character !== " ");
+
+    filteredBySearchString = filteredByPriceRange.filter((item) => {
+      // 'MacBook Pro' => ['m', 'a', 'c', 'b', 'o', 'o', 'k', 'p', 'r', 'o']
+      const itemTitleAsArray = item.title
+        .toLowerCase()
+        .split("")
+        .filter((character) => character !== " ");
+
+      return searchStringAsArray.every((character) =>
+        itemTitleAsArray.includes(character)
+      );
+    });
+  }
+
   return (
     <div className="products-container">
-      {filteredByPriceRange.map((item) => (
+      {filteredBySearchString.map((item) => (
         <Product key={item.id} {...item} />
       ))}
     </div>
