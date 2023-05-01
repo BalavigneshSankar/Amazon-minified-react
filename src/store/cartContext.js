@@ -10,17 +10,17 @@ const CartContextProvider = (props) => {
   const [cartItems, setCartItems] = useState([]);
 
   // On initial load:
-  // 1. 1st effect fn. executed => get cartItems from local storage, schedule cartItems updation
-  // 2. 2nd effect fn. executed => set local storage cartItems as []
+  // 1. 1st effect fn. executed => set local storage cartItems as []
+  // 2. 2nd effect fn. executed => get cartItems from local storage, schedule cartItems updation
   // 3. cartItems state updated and cartContextProvider reloads
-  // 4. 2nd effect fn. executed as cartItems changed => Set local storage cartItems to updated value
-  useEffect(() => {
-    setCartItems(JSON.parse(localStorage.getItem("cartItems")));
-  }, []);
-
+  // 4. 1st effect fn. executed again as cartItems changed => Set local storage cartItems to updated value
   useEffect(() => {
     localStorage.setItem("cartItems", JSON.stringify(cartItems));
   }, [cartItems]);
+
+  useEffect(() => {
+    setCartItems(JSON.parse(localStorage.getItem("cartItems")));
+  }, []);
 
   const cartItemsUpdateHandler = (item) => {
     // Check if item already in cart items
