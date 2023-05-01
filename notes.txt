@@ -1,0 +1,16 @@
+Features:
+Custom error page.
+Add sort by price.
+Remove leading 0 on changing quantity in input field (Product.js).
+Make responsive to all screen types.
+Implement lazy loading of product images (product card / cart item).
+Deploy in cloud.
+
+Optimisations:
+Implement useState instead of useRef in price filter (Sidebar.js).
+Implement useReducer instead of useState in minMaxPrice (ProductsPage.js).
+Make code DRY.
+Prevent unnecessary rendering of components.
+Add comments for complex to understand features.
+Organise css styles.
+

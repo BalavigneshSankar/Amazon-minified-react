@@ -725,6 +725,21 @@ main .main-container {
   padding: 0;
 }
 
+.cart-item .product-quantity-container {
+  display: grid;
+  grid-template-columns: repeat(3, auto);
+}
+
+.cart-item .alert {
+  grid-column: 1/-1;
+  justify-self: center;
+  font-size: 1.2rem;
+  background: transparent;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
 .product-price-container {
   justify-self: center;
 }
