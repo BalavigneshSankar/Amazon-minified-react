@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import { AiFillStar } from "react-icons/ai";
 import { CartContext } from "../../store/cartContext";
+import { IoAlertCircleOutline } from "react-icons/io5";
 
 const Product = ({
   id,
@@ -13,8 +14,36 @@ const Product = ({
   stock,
 }) => {
   const cartCtx = useContext(CartContext);
-  const [quantity, setQuantity] = useState(1);
+  const [enteredQuantity, setEnteredQuantity] = useState(1);
   const [readMore, setReadMore] = useState(false);
+  const [error, setError] = useState(null);
+
+  const quantityValidateHandler = (quantity) => {
+    // If proposed quantity greater than stock
+    if (quantity > stock) {
+      setError(`Available stock: ${stock}`);
+      return;
+    }
+
+    // Find if item already added to cart, if so the quantity
+    const cartQuantity = cartCtx.cartItems.find(
+      (cartItem) => cartItem.id === id
+    )?.quantity;
+
+    // If item already added in cart
+    if (cartQuantity) {
+      if (quantity + cartQuantity > stock) {
+        setError(`Available stock: ${stock}`);
+      } else {
+        setError(null);
+        setEnteredQuantity(quantity);
+      }
+      // If item not yet added in cart
+    } else {
+      setError(null);
+      setEnteredQuantity(quantity);
+    }
+  };
 
   // Rating fixed to 2 decimal places
   const ratingCorrected = rating.toFixed(1);
@@ -67,26 +96,36 @@ const Product = ({
         </p>
       </div>
       <div className="product-cta">
+        {error && (
+          <p className="alert alert-danger">
+            <IoAlertCircleOutline className="alert-icon" />
+            <span>{error}</span>
+          </p>
+        )}
         <div className="product-quantity-container">
           <button
             type="button"
             className="btn-decrement"
-            onClick={() => setQuantity((quantity) => quantity - 1)}
-            disabled={quantity === 1 ? true : false}
+            onClick={() => quantityValidateHandler(enteredQuantity - 1)}
+            disabled={enteredQuantity <= 1 ? true : false}
           >
             -
           </button>
           <input
             type="number"
             className="input-quantity"
-            value={quantity}
-            onChange={(e) => setQuantity(Number(e.target.value))}
+            value={enteredQuantity}
+            onChange={(e) => {
+              quantityValidateHandler(Number(e.target.value));
+            }}
+            min="1"
+            max={stock}
           />
           <button
             type="button"
             className="btn-increment"
-            onClick={() => setQuantity((quantity) => quantity + 1)}
-            disabled={quantity >= stock ? true : false}
+            onClick={() => quantityValidateHandler(enteredQuantity + 1)}
+            disabled={enteredQuantity >= stock ? true : false}
           >
             +
           </button>
@@ -95,13 +134,17 @@ const Product = ({
           type="button"
           className="btn"
           onClick={() => {
+            if (enteredQuantity === 0) {
+              setError("Enter a valid quantity");
+              return;
+            }
             cartCtx.cartItemsUpdateHandler({
               id,
               thumbnail,
               title,
               description,
               price,
-              quantity,
+              quantity: enteredQuantity,
               stock,
             });
           }}

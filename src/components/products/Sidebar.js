@@ -1,4 +1,5 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
+import { IoAlertCircleOutline } from "react-icons/io5";
 
 const Sidebar = ({
   items,
@@ -8,6 +9,7 @@ const Sidebar = ({
 }) => {
   const categoryArray = items.map((item) => item.category);
   const categoryUniqueArray = [...new Set(categoryArray)];
+  const [error, setError] = useState(null);
 
   const minimumPriceRef = useRef();
   const maximumPriceRef = useRef();
@@ -19,13 +21,13 @@ const Sidebar = ({
 
     // case 1: Either of the fields empty
     if (enteredMinPrice === "" || enteredMaxPrice === "") {
-      alert("Either fields can't be empty.");
+      setError("Either fields can't be empty.");
       return;
     }
 
     // case 2: Minimum value less than 0
     if (+enteredMinPrice < 0 || +enteredMaxPrice < 0) {
-      alert("Either values can't be less than 0.");
+      setError("Either values can't be less than 0.");
       return;
     }
 
@@ -34,9 +36,10 @@ const Sidebar = ({
       +enteredMaxPrice - +enteredMinPrice === 0 ||
       +enteredMaxPrice - +enteredMinPrice < 0
     ) {
-      alert("Range should be greater than 0");
+      setError("Range should be greater than 0");
       return;
     }
+    setError(null);
     onFilterByPrice(enteredMinPrice, enteredMaxPrice);
   };
 
@@ -72,13 +75,25 @@ const Sidebar = ({
         <div className="price-filter-container">
           <h3 className="title">Price Range</h3>
           <form className="form-price-limit" onSubmit={formSubmitHandler}>
-            <input type="number" placeholder="min" ref={minimumPriceRef} />
-            <span>-</span>
-            <input type="number" placeholder="max" ref={maximumPriceRef} />
+            <div className="price-limit-container">
+              <span>$</span>
+              <input type="number" placeholder="Min" ref={minimumPriceRef} />
+            </div>
+            <p>-</p>
+            <div className="price-limit-container">
+              <span>$</span>
+              <input type="number" placeholder="Max" ref={maximumPriceRef} />
+            </div>
             <button type="submit" className="btn-range">
               Go
             </button>
           </form>
+          {error && (
+            <p className="alert alert-danger">
+              <IoAlertCircleOutline className="alert-icon" />
+              <span>{error}</span>
+            </p>
+          )}
           <button
             type="button"
             className="btn-range-reset"

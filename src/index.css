@@ -259,6 +259,9 @@ ul {
   background-color: var(--black);
   padding: 1.2rem 1.6rem;
   margin-bottom: 2.4rem;
+  position: sticky;
+  top: 0;
+  z-index: 1;
 }
 
 .header .main-container {
@@ -310,6 +313,7 @@ ul {
   border-bottom-right-radius: var(--borderRadius);
   border: none;
   font-size: 1.6rem;
+  outline: none;
 }
 
 .cart-icon-container {
@@ -479,6 +483,21 @@ main .main-container {
   padding: 2.4rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
+  justify-items: center;
+}
+
+.product-cta .alert {
+  grid-column: 1/-1;
+  justify-self: center;
+  font-size: 1.2rem;
+  background: transparent;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.alert-icon {
+  margin-right: 4px;
 }
 
 .product-quantity-container {
@@ -505,16 +524,17 @@ main .main-container {
 
 .btn-decrement:disabled,
 .btn-increment:disabled {
-  color: var(--grey-300);
+  color: var(--grey-200);
   cursor: initial;
 }
 
 .input-quantity {
-  width: 4.8rem;
+  width: 6.4rem;
   padding: 4px;
   font-size: 1.8rem;
   color: var(--grey-500);
   text-align: center;
+  outline: none;
 }
 
 /* Sidebar */
@@ -571,23 +591,48 @@ main .main-container {
   gap: 8px;
   flex-wrap: wrap;
   background: var(--white);
+  margin-bottom: 8px;
 }
 
-.form-price-limit input {
-  width: 6.4rem;
-  height: 3.2rem;
+.form-price-limit .price-limit-container {
   background: transparent;
-  padding: 4px;
   border: 1px solid var(--grey-500);
   border-radius: var(--borderRadius);
+  display: flex;
 }
 
-.form-price-limit input::placeholder {
+.price-limit-container span {
   font-size: 1.6rem;
+  background-color: var(--grey-200);
+  color: var(--grey-400);
+  padding: 8px;
+  border-top-left-radius: var(--borderRadius);
+  border-bottom-left-radius: var(--borderRadius);
 }
 
-.form-price-limit span {
-  font-size: 2rem;
+.price-limit-container input {
+  padding: 8px;
+  font-size: 1.6rem;
+  width: 6.4rem;
+  border: none;
+  outline: none;
+  border-top-right-radius: var(--borderRadius);
+  border-bottom-right-radius: var(--borderRadius);
+}
+
+.price-limit-container input::-webkit-outer-spin-button,
+.price-limit-container input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.price-filter-container .alert {
+  font-size: 1.2rem;
+  background: transparent;
+  padding: 0;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
 }
 
 .btn-range {
@@ -609,7 +654,6 @@ main .main-container {
   color: var(--grey-500);
   letter-spacing: var(--letterSpacing);
   font-weight: 700;
-  padding: 8px 0;
   border: none;
   cursor: pointer;
   transition: var(--transition);
@@ -728,8 +772,8 @@ main .main-container {
 }
 
 /* Remove arrows <input type="number" /> */
-input::-webkit-outer-spin-button,
+/* input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
-}
+} */

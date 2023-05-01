@@ -42,14 +42,14 @@ const CartItem = ({
           className="input-quantity"
           value={quantity}
           onChange={(e) => {
-            const newQuantity = e.target.value;
+            const newQuantity = Number(e.target.value);
             quantityUpdateHandler(id, newQuantity);
           }}
         />
         <button
           type="button"
           className="btn-increment"
-          disabled={quantity === stock ? true : false}
+          disabled={quantity >= stock ? true : false}
           onClick={() => {
             const newQuantity = quantity + 1;
             quantityUpdateHandler(id, newQuantity);

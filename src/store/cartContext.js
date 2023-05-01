@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 export const CartContext = createContext({
   cartItems: [],
@@ -8,6 +8,19 @@ export const CartContext = createContext({
 
 const CartContextProvider = (props) => {
   const [cartItems, setCartItems] = useState([]);
+
+  // On initial load:
+  // 1. 1st effect fn. executed => get cartItems from local storage, schedule cartItems updation
+  // 2. 2nd effect fn. executed => set local storage cartItems as []
+  // 3. cartItems state updated and cartContextProvider reloads
+  // 4. 2nd effect fn. executed as cartItems changed => Set local storage cartItems to updated value
+  useEffect(() => {
+    setCartItems(JSON.parse(localStorage.getItem("cartItems")));
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  }, [cartItems]);
 
   const cartItemsUpdateHandler = (item) => {
     // Check if item already in cart items
