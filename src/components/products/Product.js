@@ -94,8 +94,10 @@ const Product = ({
             <span>/unit</span>
           </p>
         </div>
-        <div className="product-category">
-          Category: <span>{category}</span>
+        <div className="product-category-container">
+          <p className="product-category">
+            Category: <span>{category}</span>
+          </p>
         </div>
         <p className="product-description">
           {descriptionTrimmed}
@@ -113,14 +115,14 @@ const Product = ({
         </p>
       </div>
       <div className="product-cta">
-        <form onSubmit={formSubmitHandler}>
+        <form className="form-quantity" onSubmit={formSubmitHandler}>
           {error && (
             <p className="alert alert-danger">
               <IoAlertCircleOutline className="alert-icon" />
               <span>{error}</span>
             </p>
           )}
-          <div className="product-quantity-container">
+          <div className="quantity-control-container">
             <button
               type="button"
               className="btn-decrement"

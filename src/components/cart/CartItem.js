@@ -42,9 +42,9 @@ const CartItem = ({
       </div>
       <div className="product-info">
         <h3 className="product-title">{title}</h3>
-        <div className="product-description">{description}</div>
+        <p className="product-description">{description}</p>
       </div>
-      <form className="product-quantity-container">
+      <form className="quantity-control-container">
         <button
           type="button"
           className="btn-decrement"

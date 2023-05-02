@@ -88,7 +88,7 @@ const Sidebar = ({
               <span>$</span>
               <input type="number" placeholder="Min" ref={minimumPriceRef} />
             </div>
-            <p>-</p>
+            <span>-</span>
             <div className="price-limit-container">
               <span>$</span>
               <input type="number" placeholder="Max" ref={maximumPriceRef} />
