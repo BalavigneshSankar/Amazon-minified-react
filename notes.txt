@@ -1,7 +1,9 @@
 Features:
 Custom error page.
 Add sort by price.
-Remove leading 0 on changing quantity in input field (Product.js).
+Remove leading 0 on changing quantity in input field (Product.js / CartItem.js).
+Remove default alert in input fields (Sidebar.js / Product.js)
+Add validation logic to exclude quantity 0 in input field (CartItem.js)
 Make responsive to all screen types.
 Implement lazy loading of product images (product card / cart item).
 Deploy in cloud.

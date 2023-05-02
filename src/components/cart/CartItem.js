@@ -21,6 +21,13 @@ const CartItem = ({
       setError(`Available stock: ${stock}`);
       return;
     }
+
+    // If proposed quantity is a decimal
+    if (!Number.isInteger(quantity)) {
+      setError(`Enter a valid value`);
+      return;
+    }
+
     setError(null);
     quantityUpdateHandler(id, quantity);
   };
@@ -37,7 +44,7 @@ const CartItem = ({
         <h3 className="product-title">{title}</h3>
         <div className="product-description">{description}</div>
       </div>
-      <div className="product-quantity-container">
+      <form className="product-quantity-container">
         <button
           type="button"
           className="btn-decrement"
@@ -71,7 +78,7 @@ const CartItem = ({
             <span>{error}</span>
           </p>
         )}
-      </div>
+      </form>
       <div className="product-price-container">
         <p className="product-price">
           <span>$</span>

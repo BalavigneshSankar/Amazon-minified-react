@@ -45,6 +45,23 @@ const Product = ({
     }
   };
 
+  const formSubmitHandler = (e) => {
+    e.preventDefault();
+    if (enteredQuantity === 0) {
+      setError("Enter a valid quantity");
+      return;
+    }
+    cartCtx.cartItemsUpdateHandler({
+      id,
+      thumbnail,
+      title,
+      description,
+      price,
+      quantity: enteredQuantity,
+      stock,
+    });
+  };
+
   // Rating fixed to 2 decimal places
   const ratingCorrected = rating.toFixed(1);
 
@@ -96,61 +113,45 @@ const Product = ({
         </p>
       </div>
       <div className="product-cta">
-        {error && (
-          <p className="alert alert-danger">
-            <IoAlertCircleOutline className="alert-icon" />
-            <span>{error}</span>
-          </p>
-        )}
-        <div className="product-quantity-container">
-          <button
-            type="button"
-            className="btn-decrement"
-            onClick={() => quantityValidateHandler(enteredQuantity - 1)}
-            disabled={enteredQuantity <= 1 ? true : false}
-          >
-            -
+        <form onSubmit={formSubmitHandler}>
+          {error && (
+            <p className="alert alert-danger">
+              <IoAlertCircleOutline className="alert-icon" />
+              <span>{error}</span>
+            </p>
+          )}
+          <div className="product-quantity-container">
+            <button
+              type="button"
+              className="btn-decrement"
+              onClick={() => quantityValidateHandler(enteredQuantity - 1)}
+              disabled={enteredQuantity <= 1 ? true : false}
+            >
+              -
+            </button>
+            <input
+              type="number"
+              className="input-quantity"
+              value={enteredQuantity}
+              onChange={(e) => {
+                quantityValidateHandler(Number(e.target.value));
+              }}
+              min="1"
+              max={stock}
+            />
+            <button
+              type="button"
+              className="btn-increment"
+              onClick={() => quantityValidateHandler(enteredQuantity + 1)}
+              disabled={enteredQuantity >= stock ? true : false}
+            >
+              +
+            </button>
+          </div>
+          <button type="submit" className="btn">
+            Add to cart
           </button>
-          <input
-            type="number"
-            className="input-quantity"
-            value={enteredQuantity}
-            onChange={(e) => {
-              quantityValidateHandler(Number(e.target.value));
-            }}
-            min="1"
-            max={stock}
-          />
-          <button
-            type="button"
-            className="btn-increment"
-            onClick={() => quantityValidateHandler(enteredQuantity + 1)}
-            disabled={enteredQuantity >= stock ? true : false}
-          >
-            +
-          </button>
-        </div>
-        <button
-          type="button"
-          className="btn"
-          onClick={() => {
-            if (enteredQuantity === 0) {
-              setError("Enter a valid quantity");
-              return;
-            }
-            cartCtx.cartItemsUpdateHandler({
-              id,
-              thumbnail,
-              title,
-              description,
-              price,
-              quantity: enteredQuantity,
-              stock,
-            });
-          }}
-        >
-          Add to cart
-        </button>
+        </form>
       </div>
     </article>
   );

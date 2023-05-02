@@ -479,7 +479,7 @@ main .main-container {
   border-bottom: 1px solid var(--grey-700);
 }
 
-.product-cta {
+.product-cta form {
   padding: 2.4rem;
   display: grid;
   grid-template-columns: 1fr 1fr;

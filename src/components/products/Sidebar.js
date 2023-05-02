@@ -25,13 +25,22 @@ const Sidebar = ({
       return;
     }
 
-    // case 2: Minimum value less than 0
+    // case 2: Minimum or maximum value less than 0
     if (+enteredMinPrice < 0 || +enteredMaxPrice < 0) {
       setError("Either values can't be less than 0.");
       return;
     }
 
-    // case 3: Range is 0 or less than 0
+    // case 3: Either of the fields is a decimal value
+    if (
+      !Number.isInteger(+enteredMinPrice) ||
+      !Number.isInteger(+enteredMaxPrice)
+    ) {
+      setError("Either values can't be a decimal value");
+      return;
+    }
+
+    // case 4: Range is 0 or less than 0
     if (
       +enteredMaxPrice - +enteredMinPrice === 0 ||
       +enteredMaxPrice - +enteredMinPrice < 0
