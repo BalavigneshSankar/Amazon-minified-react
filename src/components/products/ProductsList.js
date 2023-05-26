@@ -1,12 +1,16 @@
 import Product from "./Product";
+import { useContext } from "react";
+import { ItemsContext } from "../../store/itemsContext";
 
-const ProductsList = ({ items, categories, minMaxPrice, searchString }) => {
+const ProductsList = ({ categories, minMaxPrice, searchString }) => {
+  const itemsCtx = useContext(ItemsContext);
+
   // Filter by category
   let filteredByCategory;
   if (categories.length === 0) {
-    filteredByCategory = items;
+    filteredByCategory = itemsCtx.items;
   } else {
-    filteredByCategory = items.filter((item) =>
+    filteredByCategory = itemsCtx.items.filter((item) =>
       categories.includes(item.category)
     );
   }
@@ -49,7 +53,11 @@ const ProductsList = ({ items, categories, minMaxPrice, searchString }) => {
   return (
     <div className="products-container">
       {filteredBySearchString.map((item) => (
-        <Product key={item.id} {...item} />
+        <Product
+          key={item.id}
+          {...item}
+          onOrder={itemsCtx.stockUpdateHandler}
+        />
       ))}
     </div>
   );

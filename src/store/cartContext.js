@@ -1,34 +1,17 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
 
 export const CartContext = createContext({
   cartItems: [],
   cartItemsUpdateHandler: () => {},
-  quantityUpdateHandler: () => [],
+  quantityUpdateHandler: () => {},
+  itemDeleteHandler: () => {},
 });
 
 const CartContextProvider = (props) => {
   const [cartItems, setCartItems] = useState([]);
 
-  // On initial load:
-  // 1. 1st effect fn. executed => get cartItems from local storage, schedule cartItems updation
-  // 2. 2nd effect fn. executed => set local storage cartItems as []
-  // 3. cartItems state updated and cartContextProvider reloads
-  // 4. 2nd effect fn. executed again as cartItems changed => Set local storage cartItems to updated value
-  useEffect(() => {
-    const localStorageData = localStorage.getItem("cartItems");
-    if (!localStorageData) {
-      setCartItems([]);
-    } else {
-      setCartItems(JSON.parse(localStorage.getItem("cartItems")));
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("cartItems", JSON.stringify(cartItems));
-  }, [cartItems]);
-
   const cartItemsUpdateHandler = (item) => {
-    // Check if item already in cart items
+    // Check if item already exist in cart items
     const cartItemIndex = cartItems.findIndex(
       (cartItem) => cartItem.id === item.id
     );

@@ -1,12 +1,11 @@
 import Header from "../components/products/Header";
 import ProductsList from "../components/products/ProductsList";
 import Sidebar from "../components/products/Sidebar";
-import { useState, useEffect } from "react";
-import fetchItemsRequest from "../axios/fetchItemsRequest";
+import { useState, useContext } from "react";
+import { ItemsContext } from "../store/itemsContext";
 
 const ProductsPage = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [items, setItems] = useState([]);
+  const itemsCtx = useContext(ItemsContext);
   const [categories, setCategories] = useState([]);
   const [minMaxPrice, setMinMaxPrice] = useState({
     minimumPrice: null,
@@ -45,35 +44,17 @@ const ProductsPage = () => {
     setSearchString(enteredString);
   };
 
-  const fetchItems = async () => {
-    setIsLoading(true);
-    try {
-      const res = await fetchItemsRequest("/products?skip=0&limit=24");
-      const fetchedItems = res.data.products;
-      setItems(fetchedItems);
-    } catch (error) {
-      console.error(error);
-    }
-    setIsLoading(false);
-  };
-
-  useEffect(() => {
-    fetchItems();
-  }, []);
-
   let content = <div className="loading"></div>;
 
-  if (!isLoading) {
+  if (!itemsCtx.isLoading) {
     content = (
       <div className="main-container">
         <Sidebar
-          items={items}
           onFilterByCategory={filterByCategoryHandler}
           onFilterByPrice={filterByPriceHandler}
           onRangeReset={rangeResetHandler}
         />
         <ProductsList
-          items={items}
           categories={categories}
           minMaxPrice={minMaxPrice}
           searchString={searchString}

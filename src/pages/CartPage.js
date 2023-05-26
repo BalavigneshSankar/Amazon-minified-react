@@ -2,9 +2,11 @@ import { useContext } from "react";
 import { CartContext } from "../store/cartContext";
 import { Link } from "react-router-dom";
 import CartItem from "../components/cart/CartItem";
+import { ItemsContext } from "../store/itemsContext";
 
 const CartPage = () => {
   const { cartItems } = useContext(CartContext);
+  const itemsCtx = useContext(ItemsContext);
 
   // Total number of units
   const totalUnits = cartItems
@@ -30,8 +32,14 @@ const CartPage = () => {
           </Link>
         </div>
         <div className="cart-items-container">
-          {cartItems.map((item) => (
-            <CartItem key={item.id} {...item} />
+          {cartItems.map((cartItem) => (
+            <CartItem
+              key={cartItem.id}
+              {...cartItem}
+              stock={
+                itemsCtx.items.find((item) => item.id === cartItem.id).stock
+              }
+            />
           ))}
         </div>
         <div className="total-price-container">

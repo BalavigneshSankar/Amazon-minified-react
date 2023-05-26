@@ -1,13 +1,10 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useContext } from "react";
 import { IoAlertCircleOutline } from "react-icons/io5";
+import { ItemsContext } from "../../store/itemsContext";
 
-const Sidebar = ({
-  items,
-  onFilterByCategory,
-  onFilterByPrice,
-  onRangeReset,
-}) => {
-  const categoryArray = items.map((item) => item.category);
+const Sidebar = ({ onFilterByCategory, onFilterByPrice, onRangeReset }) => {
+  const itemsCtx = useContext(ItemsContext);
+  const categoryArray = itemsCtx.items.map((item) => item.category);
   const categoryUniqueArray = [...new Set(categoryArray)];
   const [error, setError] = useState(null);
 

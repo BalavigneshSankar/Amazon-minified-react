@@ -11,7 +11,8 @@ const Product = ({
   price,
   category,
   description,
-  stock,
+  availableStock,
+  onOrder,
 }) => {
   const cartCtx = useContext(CartContext);
   const [enteredQuantity, setEnteredQuantity] = useState(1);
@@ -20,37 +21,23 @@ const Product = ({
 
   const quantityValidateHandler = (quantity) => {
     // If proposed quantity greater than stock
-    if (quantity > stock) {
-      setError(`Available stock: ${stock}`);
+    if (quantity > availableStock) {
+      setError(`Available stock: ${availableStock}`);
       return;
     }
-
-    // Find if item already added to cart, if so the quantity
-    const cartQuantity = cartCtx.cartItems.find(
-      (cartItem) => cartItem.id === id
-    )?.quantity;
-
-    // If item already added in cart
-    if (cartQuantity) {
-      if (quantity + cartQuantity > stock) {
-        setError(`Available stock: ${stock}`);
-      } else {
-        setError(null);
-        setEnteredQuantity(quantity);
-      }
-      // If item not yet added in cart
-    } else {
-      setError(null);
-      setEnteredQuantity(quantity);
-    }
+    setError(null);
+    setEnteredQuantity(quantity);
   };
 
   const formSubmitHandler = (e) => {
     e.preventDefault();
-    if (enteredQuantity === 0) {
+    if (enteredQuantity <= 0) {
       setError("Enter a valid quantity");
       return;
     }
+
+    onOrder(id, enteredQuantity);
+
     cartCtx.cartItemsUpdateHandler({
       id,
       thumbnail,
@@ -58,8 +45,9 @@ const Product = ({
       description,
       price,
       quantity: enteredQuantity,
-      stock,
     });
+
+    setEnteredQuantity(1);
   };
 
   // Rating fixed to 2 decimal places
@@ -139,18 +127,22 @@ const Product = ({
                 quantityValidateHandler(Number(e.target.value));
               }}
               min="1"
-              max={stock}
+              max={availableStock}
             />
             <button
               type="button"
               className="btn-increment"
               onClick={() => quantityValidateHandler(enteredQuantity + 1)}
-              disabled={enteredQuantity >= stock ? true : false}
+              disabled={enteredQuantity === availableStock ? true : false}
             >
               +
             </button>
           </div>
-          <button type="submit" className="btn">
+          <button
+            type="submit"
+            className="btn btn-add-to-cart"
+            disabled={availableStock === 0 ? true : false}
+          >
             Add to cart
           </button>
         </form>

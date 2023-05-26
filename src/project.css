@@ -408,6 +408,11 @@ main .main-container {
   outline: none;
 }
 
+.btn-add-to-cart:disabled {
+  background-color: var(--grey-200);
+  color: var(--grey-500);
+  cursor: initial;
+}
 /* ======== CART ======== */
 .cart {
   padding: 2.4rem 3.2rem;

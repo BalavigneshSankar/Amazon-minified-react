@@ -4,6 +4,7 @@ import { RouterProvider } from "react-router-dom";
 import ProductsPage from "./pages/ProductsPage";
 import CartPage from "./pages/CartPage";
 import CartContextProvider from "./store/cartContext";
+import ItemsContextProvider from "./store/itemsContext";
 
 const router = createBrowserRouter([
   { path: "/", element: <ProductsPage /> },
@@ -13,9 +14,11 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <CartContextProvider>
-      <RouterProvider router={router} />
-    </CartContextProvider>
+    <ItemsContextProvider>
+      <CartContextProvider>
+        <RouterProvider router={router} />
+      </CartContextProvider>
+    </ItemsContextProvider>
   );
 }
 

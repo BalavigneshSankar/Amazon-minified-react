@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { CartContext } from "../../store/cartContext";
 import { IoAlertCircleOutline } from "react-icons/io5";
+import { ItemsContext } from "../../store/itemsContext";
 
 const CartItem = ({
   id,
@@ -13,23 +14,24 @@ const CartItem = ({
   stock,
 }) => {
   const { quantityUpdateHandler, itemDeleteHandler } = useContext(CartContext);
+  const itemsCtx = useContext(ItemsContext);
   const [error, setError] = useState(null);
 
-  const quantityValidateHandler = (quantity) => {
+  const quantityValidateHandler = (enteredQuantity) => {
     // If proposed quantity greater than stock
-    if (quantity > stock) {
+    if (enteredQuantity > stock) {
       setError(`Available stock: ${stock}`);
       return;
     }
 
-    // If proposed quantity is a decimal
-    if (!Number.isInteger(quantity)) {
-      setError(`Enter a valid value`);
-      return;
-    }
-
     setError(null);
-    quantityUpdateHandler(id, quantity);
+    quantityUpdateHandler(id, enteredQuantity);
+
+    // Entered quantity can be more or less than quantity
+    // If less, available stock should increase, changeInQuantity will be -ve
+    // If more, available stock should decrease, changeInQuantity will be +ve
+    const changeInQuantity = enteredQuantity - quantity;
+    itemsCtx.stockUpdateHandler(id, changeInQuantity);
   };
 
   // Price for selected no. of units
@@ -67,7 +69,7 @@ const CartItem = ({
         <button
           type="button"
           className="btn-increment"
-          disabled={quantity >= stock ? true : false}
+          disabled={quantity === stock ? true : false}
           onClick={() => quantityValidateHandler(quantity + 1)}
         >
           +
@@ -88,6 +90,8 @@ const CartItem = ({
       <button
         className="btn-delete"
         onClick={() => {
+          // On delete, add quantity in cart back to stock
+          itemsCtx.stockUpdateHandler(id, -quantity);
           itemDeleteHandler(id);
         }}
       >
