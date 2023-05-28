@@ -54,7 +54,7 @@ const ProductsList = ({ categories, minMaxPrice, searchString }) => {
     <div className="products-container">
       {filteredBySearchString.map((item) => (
         <Product
-          key={item.id}
+          key={item._id}
           {...item}
           onOrder={itemsCtx.stockUpdateHandler}
         />

@@ -2,9 +2,10 @@ import { useState, useContext } from "react";
 import { AiFillStar } from "react-icons/ai";
 import { CartContext } from "../../store/cartContext";
 import { IoAlertCircleOutline } from "react-icons/io5";
+import { URL } from "../../helper";
 
 const Product = ({
-  id,
+  _id,
   thumbnail,
   title,
   rating,
@@ -36,10 +37,10 @@ const Product = ({
       return;
     }
 
-    onOrder(id, enteredQuantity);
+    onOrder(_id, enteredQuantity);
 
     cartCtx.cartItemsUpdateHandler({
-      id,
+      _id,
       thumbnail,
       title,
       description,
@@ -67,7 +68,7 @@ const Product = ({
   return (
     <article className="product-card">
       <div className="product-img-rating-container">
-        <img src={thumbnail} alt={title} className="product-img" />
+        <img src={`${URL}${thumbnail}`} alt={title} className="product-img" />
         <p className="product-rating">
           <AiFillStar className="rating-icon" />
           <span>{ratingCorrected}</span>

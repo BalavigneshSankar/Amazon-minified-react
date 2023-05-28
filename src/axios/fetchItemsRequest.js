@@ -1,7 +1,8 @@
 import axios from "axios";
+import { URL } from "../helper";
 
 const fetchItemsRequest = axios.create({
-  baseURL: "https://dummyjson.com",
+  baseURL: URL,
   headers: {
     Accept: "application/json",
   },

@@ -3,9 +3,10 @@ import { RiDeleteBinLine } from "react-icons/ri";
 import { CartContext } from "../../store/cartContext";
 import { IoAlertCircleOutline } from "react-icons/io5";
 import { ItemsContext } from "../../store/itemsContext";
+import { URL } from "../../helper";
 
 const CartItem = ({
-  id,
+  _id,
   thumbnail,
   title,
   description,
@@ -25,13 +26,13 @@ const CartItem = ({
     }
 
     setError(null);
-    quantityUpdateHandler(id, enteredQuantity);
+    quantityUpdateHandler(_id, enteredQuantity);
 
     // Entered quantity can be more or less than quantity
     // If less, available stock should increase, changeInQuantity will be -ve
     // If more, available stock should decrease, changeInQuantity will be +ve
     const changeInQuantity = enteredQuantity - quantity;
-    itemsCtx.stockUpdateHandler(id, changeInQuantity);
+    itemsCtx.stockUpdateHandler(_id, changeInQuantity);
   };
 
   // Price for selected no. of units
@@ -40,7 +41,7 @@ const CartItem = ({
   return (
     <article className="cart-item">
       <div className="product-img-container">
-        <img src={thumbnail} alt={title} className="product-img" />
+        <img src={`${URL}${thumbnail}`} alt={title} className="product-img" />
       </div>
       <div className="product-info">
         <h3 className="product-title">{title}</h3>
@@ -91,8 +92,8 @@ const CartItem = ({
         className="btn-delete"
         onClick={() => {
           // On delete, add quantity in cart back to stock
-          itemsCtx.stockUpdateHandler(id, -quantity);
-          itemDeleteHandler(id);
+          itemsCtx.stockUpdateHandler(_id, -quantity);
+          itemDeleteHandler(_id);
         }}
       >
         <RiDeleteBinLine className="delete-icon" />

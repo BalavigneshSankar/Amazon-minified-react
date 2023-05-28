@@ -13,7 +13,7 @@ const CartContextProvider = (props) => {
   const cartItemsUpdateHandler = (item) => {
     // Check if item already exist in cart items
     const cartItemIndex = cartItems.findIndex(
-      (cartItem) => cartItem.id === item.id
+      (cartItem) => cartItem._id === item._id
     );
 
     if (cartItemIndex !== -1) {
@@ -29,9 +29,11 @@ const CartContextProvider = (props) => {
     }
   };
 
-  const quantityUpdateHandler = (id, newQuantity) => {
+  const quantityUpdateHandler = (_id, newQuantity) => {
     // Find index of the particular item
-    const cartItemIndex = cartItems.findIndex((cartItem) => cartItem.id === id);
+    const cartItemIndex = cartItems.findIndex(
+      (cartItem) => cartItem._id === _id
+    );
 
     // Update quantity of particular item
     setCartItems((cartItems) => {
@@ -41,11 +43,11 @@ const CartContextProvider = (props) => {
     });
   };
 
-  const itemDeleteHandler = (id) => {
+  const itemDeleteHandler = (_id) => {
     // Delete particular item
     setCartItems((cartItems) => {
       const updatedCartItems = structuredClone(cartItems);
-      return updatedCartItems.filter((cartItem) => cartItem.id !== id);
+      return updatedCartItems.filter((cartItem) => cartItem._id !== _id);
     });
   };
 

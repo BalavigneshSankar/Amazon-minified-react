@@ -14,8 +14,8 @@ const ItemsContextProvider = (props) => {
   const fetchItems = async () => {
     setIsLoading(true);
     try {
-      const res = await fetchItemsRequest("/products?skip=0&limit=24");
-      const fetchedItems = res.data.products;
+      const res = await fetchItemsRequest("/api/v1/items");
+      const fetchedItems = res.data.data.items;
       fetchedItems.forEach((item) => (item.availableStock = item.stock));
       setItems(fetchedItems);
     } catch (error) {
@@ -28,11 +28,11 @@ const ItemsContextProvider = (props) => {
     fetchItems();
   }, []);
 
-  const stockUpdateHandler = (id, quantity) => {
+  const stockUpdateHandler = (_id, quantity) => {
     setItems((prevState) => {
       let prdtItems = structuredClone(prevState);
       //  Find index of item, change available stock
-      const index = prdtItems.findIndex((item) => item.id === id);
+      const index = prdtItems.findIndex((item) => item._id === _id);
       const updatedItem = prdtItems[index];
       updatedItem.availableStock = updatedItem.availableStock - quantity;
       return prdtItems;

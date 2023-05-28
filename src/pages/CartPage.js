@@ -34,10 +34,10 @@ const CartPage = () => {
         <div className="cart-items-container">
           {cartItems.map((cartItem) => (
             <CartItem
-              key={cartItem.id}
+              key={cartItem._id}
               {...cartItem}
               stock={
-                itemsCtx.items.find((item) => item.id === cartItem.id).stock
+                itemsCtx.items.find((item) => item._id === cartItem._id).stock
               }
             />
           ))}
