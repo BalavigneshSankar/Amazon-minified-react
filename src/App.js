@@ -5,9 +5,11 @@ import ProductsPage from "./pages/ProductsPage";
 import CartPage from "./pages/CartPage";
 import CartContextProvider from "./store/cartContext";
 import ItemsContextProvider from "./store/itemsContext";
+import AuthPage from "./pages/AuthPage";
 
 const router = createBrowserRouter([
-  { path: "/", element: <ProductsPage /> },
+  { path: "/", element: <AuthPage /> },
+  { path: "/login", element: <AuthPage /> },
   { path: "/products", element: <ProductsPage /> },
   { path: "/cart", element: <CartPage /> },
 ]);
