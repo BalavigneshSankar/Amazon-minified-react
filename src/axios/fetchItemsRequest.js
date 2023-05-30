@@ -1,11 +1,11 @@
 import axios from "axios";
 import { URL } from "../helper";
 
-const fetchItemsRequest = axios.create({
+const axiosInstance = axios.create({
   baseURL: URL,
   headers: {
     Accept: "application/json",
   },
 });
 
-export default fetchItemsRequest;
+export default axiosInstance;

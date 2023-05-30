@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState } from "react";
-import fetchItemsRequest from "../axios/fetchItemsRequest";
+import axiosInstance from "../axios/fetchItemsRequest";
 
 export const ItemsContext = createContext({
   isLoading: true,
@@ -14,9 +14,8 @@ const ItemsContextProvider = (props) => {
   const fetchItems = async () => {
     setIsLoading(true);
     try {
-      const res = await fetchItemsRequest("/api/v1/items");
+      const res = await axiosInstance("/api/v1/items");
       const fetchedItems = res.data.data.items;
-      fetchedItems.forEach((item) => (item.availableStock = item.stock));
       setItems(fetchedItems);
     } catch (error) {
       console.error(error);
@@ -28,15 +27,26 @@ const ItemsContextProvider = (props) => {
     fetchItems();
   }, []);
 
-  const stockUpdateHandler = (_id, quantity) => {
-    setItems((prevState) => {
-      let prdtItems = structuredClone(prevState);
+  const updateItem = async (_id, item) => {
+    try {
+      await axiosInstance.post(`/api/v1/items/${_id}`, item);
+    } catch (err) {
+      throw new Error(err);
+    }
+  };
+
+  const stockUpdateHandler = async (_id, quantity) => {
+    try {
+      let prdtItems = structuredClone(items);
       //  Find index of item, change available stock
       const index = prdtItems.findIndex((item) => item._id === _id);
       const updatedItem = prdtItems[index];
       updatedItem.availableStock = updatedItem.availableStock - quantity;
-      return prdtItems;
-    });
+      await updateItem(_id, updatedItem);
+      fetchItems();
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (

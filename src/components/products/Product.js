@@ -12,6 +12,7 @@ const Product = ({
   price,
   category,
   description,
+  stock,
   availableStock,
   onOrder,
 }) => {
@@ -46,6 +47,7 @@ const Product = ({
       description,
       price,
       quantity: enteredQuantity,
+      stock,
     });
 
     setEnteredQuantity(1);
