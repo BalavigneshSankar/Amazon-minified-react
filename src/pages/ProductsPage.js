@@ -1,11 +1,13 @@
 import Header from "../components/products/Header";
 import ProductsList from "../components/products/ProductsList";
 import Sidebar from "../components/products/Sidebar";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { ItemsContext } from "../store/itemsContext";
+import { useNavigate } from "react-router-dom";
+import Error from "../components/products/Error";
 
 const ProductsPage = () => {
-  const itemsCtx = useContext(ItemsContext);
+  const { isLoading, error, fetchItems } = useContext(ItemsContext);
   const [categories, setCategories] = useState([]);
   const [minMaxPrice, setMinMaxPrice] = useState({
     minimumPrice: null,
@@ -13,6 +15,12 @@ const ProductsPage = () => {
     isRangeSet: false,
   });
   const [searchString, setSearchString] = useState("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    fetchItems(token);
+  }, [fetchItems, navigate]);
 
   const filterByCategoryHandler = (e) => {
     if (e.target.checked) {
@@ -46,33 +54,37 @@ const ProductsPage = () => {
 
   let content = <div className="loading"></div>;
 
-  if (!itemsCtx.isLoading) {
+  if (!isLoading && error) {
+    content = <Error />;
+  }
+
+  if (!isLoading && !error) {
     content = (
-      <div className="main-container">
-        <Sidebar
-          onFilterByCategory={filterByCategoryHandler}
-          onFilterByPrice={filterByPriceHandler}
-          onRangeReset={rangeResetHandler}
-        />
-        <ProductsList
-          categories={categories}
-          minMaxPrice={minMaxPrice}
-          searchString={searchString}
-        />
-      </div>
+      <>
+        <header className="header">
+          <div className="main-container">
+            <Header onSearch={itemsSearchHandler} />
+          </div>
+        </header>
+        <main>
+          <div className="main-container">
+            <Sidebar
+              onFilterByCategory={filterByCategoryHandler}
+              onFilterByPrice={filterByPriceHandler}
+              onRangeReset={rangeResetHandler}
+            />
+            <ProductsList
+              categories={categories}
+              minMaxPrice={minMaxPrice}
+              searchString={searchString}
+            />
+          </div>
+        </main>
+      </>
     );
   }
 
-  return (
-    <>
-      <header className="header">
-        <div className="main-container">
-          <Header onSearch={itemsSearchHandler} />
-        </div>
-      </header>
-      <main>{content}</main>
-    </>
-  );
+  return content;
 };
 
 export default ProductsPage;

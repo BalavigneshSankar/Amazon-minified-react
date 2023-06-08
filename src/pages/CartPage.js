@@ -25,7 +25,7 @@ const CartPage = () => {
               ? "Shopping Cart"
               : "Your Amazon Cart is empty."}
           </h2>
-          <Link to="/products" className="link">
+          <Link to="/products" className="products-link">
             &#8592; Go to Products Page
           </Link>
         </div>

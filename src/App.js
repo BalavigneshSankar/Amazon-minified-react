@@ -9,7 +9,7 @@ import AuthPage from "./pages/AuthPage";
 
 const router = createBrowserRouter([
   { path: "/", element: <AuthPage /> },
-  { path: "/login", element: <AuthPage /> },
+  { path: "/auth", element: <AuthPage /> },
   { path: "/products", element: <ProductsPage /> },
   { path: "/cart", element: <CartPage /> },
 ]);

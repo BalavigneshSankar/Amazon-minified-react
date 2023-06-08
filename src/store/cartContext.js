@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from "react";
-import axiosInstance from "../axios/fetchItemsRequest";
+import axiosInstance from "../axios/axiosInstance";
 
 export const CartContext = createContext({
   cartItems: [],

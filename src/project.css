@@ -441,8 +441,8 @@ main .main-container {
   text-align: start;
 }
 
-.title-link-container .link:link,
-.title-link-container .link:visited {
+.title-link-container .products-link:link,
+.title-link-container .products-link:visited {
   font-size: 1.6rem;
   cursor: pointer;
 }
@@ -580,6 +580,7 @@ main .main-container {
   display: flex;
   flex-direction: column;
   gap: 1.6rem;
+  margin-bottom: 2.4rem;
 }
 
 .form-user label {
@@ -588,16 +589,19 @@ main .main-container {
 }
 
 .form-user input {
-  padding: 0.4rem 0.2rem;
+  padding: 0.4rem 0.8rem;
   font-size: 1.6rem;
   border-radius: var(--borderRadius);
   border: none;
   outline: none;
   border: 1px solid var(--grey-500);
+  color: var(--grey-700);
 }
 
-.form-username-container,
-.form-password-container {
+.form-name-container,
+.form-email-container,
+.form-password-container,
+.form-confirm-password-container {
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
@@ -610,7 +614,6 @@ main .main-container {
   border: none;
   border-radius: var(--borderRadius);
   transition: var(--transition);
-  margin-bottom: 1.6rem;
 }
 
 .btn-auth--primary:hover {
@@ -621,6 +624,7 @@ main .main-container {
 .devider {
   position: relative;
   text-align: center;
+  margin-bottom: 1.2rem;
 }
 
 .devider h5 {
@@ -630,6 +634,7 @@ main .main-container {
   background: var(--white);
   color: var(--grey-500);
   padding: 0 0.4rem;
+  text-transform: none;
 }
 
 .devider::after {
@@ -651,9 +656,45 @@ main .main-container {
   color: var(--grey-700);
   border-radius: var(--borderRadius);
   transition: var(--transition);
+  width: 100%;
 }
 
 .btn-auth--secondary:hover {
   cursor: pointer;
   background: var(--grey-200);
+}
+
+/* ======== Error ======== */
+main .main-error-container {
+  width: 75vw;
+  margin: 0 auto;
+  padding: 8rem 6.4rem;
+  display: block;
+  text-align: center;
+}
+
+.error {
+  font-size: 3rem;
+  font-weight: 600;
+  margin-bottom: 4.8rem;
+}
+
+.main-error-container .login-link:link,
+.main-error-container .login-link:visited {
+  font-size: 1.6rem;
+  cursor: pointer;
+  color: var(--white);
+  background: var(--primary-500);
+  border: none;
+  border-radius: var(--borderRadius);
+  box-shadow: var(--shadow-1);
+  transition: var(--transition);
+  display: inline-block;
+  padding: 0.8rem;
+}
+
+.main-error-container .login-link:hover,
+.main-error-container .login-link:active {
+  background: var(--primary-700);
+  box-shadow: var(--shadow-3);
 }

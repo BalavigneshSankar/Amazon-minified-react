@@ -1,7 +1,7 @@
 import Product from "./Product";
 import { useContext, useEffect, useState } from "react";
 import { ItemsContext } from "../../store/itemsContext";
-import axiosInstance from "../../axios/fetchItemsRequest";
+import axiosInstance from "../../axios/axiosInstance";
 
 const ProductsList = ({ categories, minMaxPrice, searchString }) => {
   const itemsCtx = useContext(ItemsContext);

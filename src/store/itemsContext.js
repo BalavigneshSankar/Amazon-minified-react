@@ -1,30 +1,32 @@
-import { createContext, useEffect, useState } from "react";
-import axiosInstance from "../axios/fetchItemsRequest";
+import { createContext, useState, useCallback } from "react";
+import axiosInstance from "../axios/axiosInstance";
 
 export const ItemsContext = createContext({
   isLoading: true,
   items: [],
+  error: null,
+  fetchItems: () => {},
   stockUpdateHandler: () => {},
 });
 
 const ItemsContextProvider = (props) => {
   const [isLoading, setIsLoading] = useState(true);
   const [items, setItems] = useState([]);
+  const [error, setError] = useState(null);
 
-  const fetchItems = async () => {
-    setIsLoading(true);
+  const fetchItems = useCallback(async (token) => {
     try {
-      const res = await axiosInstance("/api/v1/items");
+      setIsLoading(true);
+      setError(null);
+      const res = await axiosInstance.get("/api/v1/items", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       const fetchedItems = res.data.data.items;
       setItems(fetchedItems);
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      setError(err.response.data.message);
     }
     setIsLoading(false);
-  };
-
-  useEffect(() => {
-    fetchItems();
   }, []);
 
   const updateItem = async (_id, item) => {
@@ -54,6 +56,8 @@ const ItemsContextProvider = (props) => {
       value={{
         isLoading,
         items,
+        error,
+        fetchItems,
         stockUpdateHandler,
       }}
     >

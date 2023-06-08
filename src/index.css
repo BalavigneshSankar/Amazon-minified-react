@@ -177,6 +177,10 @@ ul {
   color: var(--green-dark);
   background: var(--green-light);
 }
+
+.alert-danger span {
+  line-height: 1.5;
+}
 /* form */
 
 .form {
