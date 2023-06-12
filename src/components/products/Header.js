@@ -2,13 +2,17 @@ import logo from "../../assets/amazon-logo.png";
 import { FiShoppingCart } from "react-icons/fi";
 import { BsSearch } from "react-icons/bs";
 import { Link } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { CartContext } from "../../store/cartContext";
 
 const Header = ({ onSearch }) => {
-  const cartCtx = useContext(CartContext);
+  const { cartItems, fetchCartItems } = useContext(CartContext);
 
-  const noOfCartItems = cartCtx.cartItems
+  useEffect(() => {
+    fetchCartItems();
+  }, [fetchCartItems]);
+
+  const noOfCartItems = cartItems
     .map((item) => item.quantity)
     .reduce((total, quantity) => total + quantity, 0);
 

@@ -1,8 +1,11 @@
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState, useCallback } from "react";
 import axiosInstance from "../axios/axiosInstance";
+import { createConfigObj } from "../helper";
 
 export const CartContext = createContext({
   cartItems: [],
+  error: null,
+  fetchCartItems: () => {},
   cartItemsUpdateHandler: () => {},
   quantityUpdateHandler: () => {},
   itemDeleteHandler: () => {},
@@ -10,24 +13,24 @@ export const CartContext = createContext({
 
 const CartContextProvider = (props) => {
   const [cartItems, setCartItems] = useState([]);
+  const [error, setError] = useState(null);
 
-  const fetchCartItems = async () => {
+  const fetchCartItems = useCallback(async () => {
     try {
-      const res = await axiosInstance("/api/v1/cart");
-      const fetchedCartItems = res.data.data.cartItems;
-      setCartItems(fetchedCartItems);
+      setError(null);
+      const res = await axiosInstance.get(
+        `/api/v1/cart-items`,
+        createConfigObj()
+      );
+      setCartItems(res.data.data.cartItems);
     } catch (err) {
-      throw new Error(err);
+      setError(err.response.data.message);
     }
-  };
-
-  useEffect(() => {
-    fetchCartItems();
   }, []);
 
   const createCartItem = async (item) => {
     try {
-      await axiosInstance.post("/api/v1/cart", item);
+      await axiosInstance.post(`/api/v1/cart-items`, item, createConfigObj());
     } catch (err) {
       throw new Error(err);
     }
@@ -35,7 +38,11 @@ const CartContextProvider = (props) => {
 
   const updateCartItem = async (item) => {
     try {
-      await axiosInstance.put(`/api/v1/cart/${item._id}`, item);
+      await axiosInstance.patch(
+        `/api/v1/cart-items`,
+        { cartItem: item },
+        createConfigObj()
+      );
     } catch (err) {
       throw new Error(err);
     }
@@ -43,7 +50,11 @@ const CartContextProvider = (props) => {
 
   const deleteCartItem = async (_id) => {
     try {
-      await axiosInstance.delete(`/api/v1/cart/${_id}`);
+      await axiosInstance.patch(
+        `/api/v1/cart-items`,
+        { cartItemId: _id },
+        createConfigObj()
+      );
     } catch (err) {
       throw new Error(err);
     }
@@ -51,6 +62,7 @@ const CartContextProvider = (props) => {
 
   const cartItemsUpdateHandler = async (item) => {
     try {
+      setError(null);
       // Check if item already exist in cart items
       const cartItemIndex = cartItems.findIndex(
         (cartItem) => cartItem._id === item._id
@@ -66,12 +78,13 @@ const CartContextProvider = (props) => {
       }
       fetchCartItems();
     } catch (err) {
-      console.log(err);
+      setError(err.response.data.message);
     }
   };
 
   const quantityUpdateHandler = async (_id, newQuantity) => {
     try {
+      setError();
       // Find index of the particular item
       const cartItemIndex = cartItems.findIndex(
         (cartItem) => cartItem._id === _id
@@ -83,7 +96,7 @@ const CartContextProvider = (props) => {
       await updateCartItem(updatedItem);
       fetchCartItems();
     } catch (err) {
-      console.log(err);
+      setError(err.response.data.message);
     }
   };
 
@@ -92,7 +105,7 @@ const CartContextProvider = (props) => {
       await deleteCartItem(_id);
       fetchCartItems();
     } catch (err) {
-      console.log(err);
+      setError(err.response.data.message);
     }
   };
 
@@ -100,6 +113,8 @@ const CartContextProvider = (props) => {
     <CartContext.Provider
       value={{
         cartItems,
+        error,
+        fetchCartItems,
         cartItemsUpdateHandler,
         quantityUpdateHandler,
         itemDeleteHandler,

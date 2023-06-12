@@ -1,11 +1,7 @@
 import logo from "../../assets/amazon-logo.png";
 import { Link } from "react-router-dom";
-import { useContext } from "react";
-import { ItemsContext } from "../../store/itemsContext";
 
-const Error = () => {
-  const itemsCtx = useContext(ItemsContext);
-
+const Error = ({ error }) => {
   return (
     <>
       <header className="header">
@@ -17,7 +13,7 @@ const Error = () => {
       </header>
       <main>
         <div className="main-container main-error-container">
-          <p className="error">Error: {itemsCtx.error}!</p>
+          <p className="error">Error: {error || "Something went wrong"}!</p>
           <Link to="/auth" className="login-link">
             Got to Login
           </Link>

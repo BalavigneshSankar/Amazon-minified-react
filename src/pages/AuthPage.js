@@ -3,6 +3,7 @@ import logo from "./../assets/Amazon_logo.webp";
 import axiosInstance from "../axios/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import { IoAlertCircleOutline } from "react-icons/io5";
+import jwt_decode from "jwt-decode";
 
 const formInitialState = {
   name: "",
@@ -30,6 +31,7 @@ const AuthPage = () => {
   };
 
   const authToggleHandler = (e) => {
+    // On switch b/w login and sign up, error set to null and empty form fields
     setError(null);
     setFormDetails(formInitialState);
     setIsLogIn((prevState) => !prevState);
@@ -39,23 +41,29 @@ const AuthPage = () => {
     try {
       const res = await axiosInstance.post(path, body);
       const token = res.data.token;
+      const { id } = jwt_decode(token);
       localStorage.setItem("token", token);
+      localStorage.setItem("userId", id);
       navigate("/products");
     } catch (err) {
-      setError(err.response.data.message);
+      throw new Error(err.response.data.message);
     }
   };
 
   const userFormSubmitHandler = async (e) => {
-    e.preventDefault();
-    setError(null);
-    if (isLogIn) {
-      await authRequest("/api/v1/users/login", {
-        email: formDetails.email,
-        password: formDetails.password,
-      });
-    } else {
-      await authRequest("/api/v1/users/signup", formDetails);
+    try {
+      e.preventDefault();
+      setError(null);
+      if (isLogIn) {
+        await authRequest("/api/v1/users/login", {
+          email: formDetails.email,
+          password: formDetails.password,
+        });
+      } else {
+        await authRequest("/api/v1/users/signup", formDetails);
+      }
+    } catch (err) {
+      setError(err.message);
     }
   };
 

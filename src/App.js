@@ -6,9 +6,14 @@ import CartPage from "./pages/CartPage";
 import CartContextProvider from "./store/cartContext";
 import ItemsContextProvider from "./store/itemsContext";
 import AuthPage from "./pages/AuthPage";
+import Error from "./components/products/Error";
 
 const router = createBrowserRouter([
-  { path: "/", element: <AuthPage /> },
+  {
+    path: "/",
+    element: <AuthPage />,
+    errorElement: <Error error={"Page not found"} />,
+  },
   { path: "/auth", element: <AuthPage /> },
   { path: "/products", element: <ProductsPage /> },
   { path: "/cart", element: <CartPage /> },

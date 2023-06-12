@@ -1,10 +1,15 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { CartContext } from "../store/cartContext";
 import { Link } from "react-router-dom";
 import CartItem from "../components/cart/CartItem";
+import Error from "../components/products/Error";
 
 const CartPage = () => {
-  const { cartItems } = useContext(CartContext);
+  const { cartItems, error, fetchCartItems } = useContext(CartContext);
+
+  useEffect(() => {
+    fetchCartItems();
+  }, [fetchCartItems]);
 
   // Total number of units
   const totalUnits = cartItems
@@ -15,6 +20,10 @@ const CartPage = () => {
   const totalAmount = cartItems
     .map((cartItem) => cartItem.price * cartItem.quantity)
     .reduce((total, amount) => total + amount, 0);
+
+  if (error) {
+    return <Error error={error} />;
+  }
 
   return (
     <div className="cart">

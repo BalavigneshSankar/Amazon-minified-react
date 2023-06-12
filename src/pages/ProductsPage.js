@@ -3,7 +3,6 @@ import ProductsList from "../components/products/ProductsList";
 import Sidebar from "../components/products/Sidebar";
 import { useState, useContext, useEffect } from "react";
 import { ItemsContext } from "../store/itemsContext";
-import { useNavigate } from "react-router-dom";
 import Error from "../components/products/Error";
 
 const ProductsPage = () => {
@@ -15,12 +14,10 @@ const ProductsPage = () => {
     isRangeSet: false,
   });
   const [searchString, setSearchString] = useState("");
-  const navigate = useNavigate();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    fetchItems(token);
-  }, [fetchItems, navigate]);
+    fetchItems();
+  }, [fetchItems]);
 
   const filterByCategoryHandler = (e) => {
     if (e.target.checked) {
@@ -55,7 +52,7 @@ const ProductsPage = () => {
   let content = <div className="loading"></div>;
 
   if (!isLoading && error) {
-    content = <Error />;
+    content = <Error error={error} />;
   }
 
   if (!isLoading && !error) {

@@ -1,5 +1,5 @@
 Features:
-Custom error page.
+Error page replace "Something went wrong" with "404 Page not found" on visiting non-existing pages.
 Add sort by price.
 Remove leading 0 on changing quantity in input field (Product.js / CartItem.js).
 Remove browser's default alert in input fields for decimals (Sidebar.js / Product.js).

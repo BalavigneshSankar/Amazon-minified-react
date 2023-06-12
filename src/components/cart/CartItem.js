@@ -18,7 +18,7 @@ const CartItem = ({
   const itemsCtx = useContext(ItemsContext);
   const [error, setError] = useState(null);
 
-  const quantityValidateHandler = (enteredQuantity) => {
+  const quantityValidateHandler = async (enteredQuantity) => {
     // If proposed quantity greater than stock
     if (enteredQuantity > stock) {
       setError(`Available stock: ${stock}`);
@@ -33,6 +33,11 @@ const CartItem = ({
     // If more, available stock should decrease, changeInQuantity will be +ve
     const changeInQuantity = enteredQuantity - quantity;
     itemsCtx.stockUpdateHandler(_id, changeInQuantity);
+  };
+
+  const cartItemDeleteHandler = async () => {
+    itemsCtx.stockUpdateHandler(_id, -quantity);
+    itemDeleteHandler(_id);
   };
 
   // Price for selected no. of units
@@ -88,14 +93,7 @@ const CartItem = ({
           {updatedPrice}
         </p>
       </div>
-      <button
-        className="btn-delete"
-        onClick={() => {
-          // On delete, add quantity in cart back to stock
-          itemsCtx.stockUpdateHandler(_id, -quantity);
-          itemDeleteHandler(_id);
-        }}
-      >
+      <button className="btn-delete" onClick={cartItemDeleteHandler}>
         <RiDeleteBinLine className="delete-icon" />
       </button>
     </article>

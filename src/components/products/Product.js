@@ -31,14 +31,14 @@ const Product = ({
     setEnteredQuantity(quantity);
   };
 
-  const formSubmitHandler = (e) => {
+  const formSubmitHandler = async (e) => {
     e.preventDefault();
     if (enteredQuantity <= 0) {
       setError("Enter a valid quantity");
       return;
     }
 
-    onOrder(_id, enteredQuantity);
+    await onOrder(_id, enteredQuantity);
 
     cartCtx.cartItemsUpdateHandler({
       _id,

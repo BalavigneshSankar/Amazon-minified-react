@@ -3,10 +3,10 @@ import { IoAlertCircleOutline } from "react-icons/io5";
 import { ItemsContext } from "../../store/itemsContext";
 
 const Sidebar = ({ onFilterByCategory, onFilterByPrice, onRangeReset }) => {
+  const [error, setError] = useState(null);
   const itemsCtx = useContext(ItemsContext);
   const categoryArray = itemsCtx.items.map((item) => item.category);
   const categoryUniqueArray = [...new Set(categoryArray)];
-  const [error, setError] = useState(null);
 
   const minimumPriceRef = useRef();
   const maximumPriceRef = useRef();

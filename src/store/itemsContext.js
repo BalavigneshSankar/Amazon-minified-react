@@ -1,10 +1,12 @@
 import { createContext, useState, useCallback } from "react";
 import axiosInstance from "../axios/axiosInstance";
+import { createConfigObj } from "../helper";
 
 export const ItemsContext = createContext({
   isLoading: true,
   items: [],
   error: null,
+  setError: () => {},
   fetchItems: () => {},
   stockUpdateHandler: () => {},
 });
@@ -14,13 +16,11 @@ const ItemsContextProvider = (props) => {
   const [items, setItems] = useState([]);
   const [error, setError] = useState(null);
 
-  const fetchItems = useCallback(async (token) => {
+  const fetchItems = useCallback(async () => {
     try {
       setIsLoading(true);
       setError(null);
-      const res = await axiosInstance.get("/api/v1/items", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const res = await axiosInstance.get("/api/v1/items", createConfigObj());
       const fetchedItems = res.data.data.items;
       setItems(fetchedItems);
     } catch (err) {
@@ -29,25 +29,29 @@ const ItemsContextProvider = (props) => {
     setIsLoading(false);
   }, []);
 
-  const updateItem = async (_id, item) => {
+  const updateItem = async (productId, item) => {
     try {
-      await axiosInstance.post(`/api/v1/items/${_id}`, item);
+      await axiosInstance.put(
+        `/api/v1/items/${productId}`,
+        item,
+        createConfigObj()
+      );
     } catch (err) {
-      throw new Error(err);
+      throw new Error(err.message);
     }
   };
 
-  const stockUpdateHandler = async (_id, quantity) => {
+  const stockUpdateHandler = async (productId, quantity) => {
     try {
-      let prdtItems = structuredClone(items);
+      let productItems = structuredClone(items);
       //  Find index of item, change available stock
-      const index = prdtItems.findIndex((item) => item._id === _id);
-      const updatedItem = prdtItems[index];
+      const index = productItems.findIndex((item) => item._id === productId);
+      const updatedItem = productItems[index];
       updatedItem.availableStock = updatedItem.availableStock - quantity;
-      await updateItem(_id, updatedItem);
+      await updateItem(productId, updatedItem);
       fetchItems();
     } catch (err) {
-      console.log(err);
+      setError(err.message);
     }
   };
 
@@ -57,6 +61,7 @@ const ItemsContextProvider = (props) => {
         isLoading,
         items,
         error,
+        setError,
         fetchItems,
         stockUpdateHandler,
       }}
