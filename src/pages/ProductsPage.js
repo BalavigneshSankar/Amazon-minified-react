@@ -59,7 +59,7 @@ const ProductsPage = () => {
     content = (
       <>
         <header className="header">
-          <div className="main-container">
+          <div className="main-header-container">
             <Header onSearch={itemsSearchHandler} />
           </div>
         </header>

@@ -3,9 +3,12 @@ import { CartContext } from "../store/cartContext";
 import { Link } from "react-router-dom";
 import CartItem from "../components/cart/CartItem";
 import Error from "../components/products/Error";
+import logo from "./../assets/amazon-logo.png";
+import { useNavigate } from "react-router-dom";
 
 const CartPage = () => {
   const { cartItems, error, fetchCartItems } = useContext(CartContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchCartItems();
@@ -25,8 +28,28 @@ const CartPage = () => {
     return <Error error={error} />;
   }
 
+  const logoutHandler = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    navigate("/auth");
+  };
+
   return (
     <div className="cart">
+      <header className="header">
+        <div className="main-header-container">
+          <div className="logo-container">
+            <img src={logo} alt="logo" className="logo" />
+          </div>
+          <button
+            type="button"
+            className="btn btn-logout"
+            onClick={logoutHandler}
+          >
+            Logout
+          </button>
+        </div>
+      </header>
       <div className="main-container">
         <div className="title-link-container">
           <h2 className="title">

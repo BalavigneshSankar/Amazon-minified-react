@@ -9,7 +9,7 @@
   z-index: 1;
 }
 
-.header .main-container {
+.header .main-header-container {
   width: 95vw;
   margin: 0 auto;
   display: flex;
@@ -61,6 +61,12 @@
   outline: none;
 }
 
+.cart-logout-container {
+  display: flex;
+  flex-direction: row;
+  gap: 1.2rem;
+}
+
 .cart-icon-container {
   padding: 1.2rem;
   position: relative;
@@ -82,6 +88,10 @@
   font-size: 1.6rem;
   font-weight: 700;
   color: var(--primary-500);
+}
+
+.btn-logout {
+  align-self: center;
 }
 
 /* ======== MAIN ======== */
@@ -415,7 +425,7 @@ main .main-container {
 }
 /* ======== CART ======== */
 .cart {
-  padding: 2.4rem 3.2rem;
+  height: 100vh;
   background: var(--grey-200);
 }
 

@@ -4,9 +4,11 @@ import { BsSearch } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { useContext, useEffect } from "react";
 import { CartContext } from "../../store/cartContext";
+import { useNavigate } from "react-router-dom";
 
 const Header = ({ onSearch }) => {
   const { cartItems, fetchCartItems } = useContext(CartContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchCartItems();
@@ -15,6 +17,12 @@ const Header = ({ onSearch }) => {
   const noOfCartItems = cartItems
     .map((item) => item.quantity)
     .reduce((total, quantity) => total + quantity, 0);
+
+  const logoutHandler = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    navigate("/auth");
+  };
 
   return (
     <>
@@ -36,13 +44,22 @@ const Header = ({ onSearch }) => {
           }}
         />
       </form>
-      <div className="cart-icon-container">
-        <Link to="/cart" className="link">
-          <FiShoppingCart className="cart-icon" />
-        </Link>
-        <div className="cart-items-indicator">
-          <p>{noOfCartItems}</p>
+      <div className="cart-logout-container">
+        <div className="cart-icon-container">
+          <Link to="/cart" className="link">
+            <FiShoppingCart className="cart-icon" />
+          </Link>
+          <div className="cart-items-indicator">
+            <p>{noOfCartItems}</p>
+          </div>
         </div>
+        <button
+          type="button"
+          className="btn btn-logout"
+          onClick={logoutHandler}
+        >
+          Logout
+        </button>
       </div>
     </>
   );

@@ -5,7 +5,7 @@ const Error = ({ error }) => {
   return (
     <>
       <header className="header">
-        <div className="main-container">
+        <div className="main-header-container">
           <div className="logo-container">
             <img src={logo} alt="logo" className="logo" />
           </div>
