@@ -12,7 +12,7 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <AuthPage />,
-    errorElement: <Error error={"Page not found"} />,
+    errorElement: <Error error={"Page not found (404)"} />,
   },
   { path: "/auth", element: <AuthPage /> },
   { path: "/products", element: <ProductsPage /> },

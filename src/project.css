@@ -436,8 +436,8 @@ main .main-container {
 }
 /* ======== CART ======== */
 .cart {
-  height: 100vh;
   background: var(--grey-200);
+  padding-bottom: 2.4rem;
 }
 
 .cart .main-container {
