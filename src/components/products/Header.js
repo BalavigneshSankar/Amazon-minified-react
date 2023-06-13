@@ -10,15 +10,20 @@ import { createConfigObj } from "./../../helper";
 
 const Header = ({ onSearch }) => {
   const { cartItems, fetchCartItems } = useContext(CartContext);
-  const [userName, setUserName] = useState("");
+  const [welcomeMsg, setWelcomeMsg] = useState("");
   const navigate = useNavigate();
 
-  const getUserName = async () => {
+  const generateWelcomeMsg = async () => {
     try {
-      const res = await axiosInstance.get("/api/v1/users", createConfigObj());
-      setUserName(res.data.data.user.toLowerCase());
+      const userId = localStorage.getItem("userId");
+      const res = await axiosInstance.get(
+        `/api/v1/users/${userId}`,
+        createConfigObj()
+      );
+      const msg = "Hello, " + res.data.data.user.name.toLowerCase();
+      setWelcomeMsg(msg);
     } catch (err) {
-      setUserName("user");
+      setWelcomeMsg("Hello, User");
     }
   };
 
@@ -27,7 +32,7 @@ const Header = ({ onSearch }) => {
   }, [fetchCartItems]);
 
   useEffect(() => {
-    getUserName();
+    generateWelcomeMsg();
   }, []);
 
   const noOfCartItems = cartItems
@@ -61,7 +66,7 @@ const Header = ({ onSearch }) => {
         />
       </form>
       <div className="username-container">
-        <p className="username">Hello, {userName}</p>
+        <p className="username">{welcomeMsg}</p>
       </div>
       <div className="cart-logout-container">
         <div className="cart-icon-container">
