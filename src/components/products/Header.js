@@ -2,17 +2,33 @@ import logo from "../../assets/amazon-logo.png";
 import { FiShoppingCart } from "react-icons/fi";
 import { BsSearch } from "react-icons/bs";
 import { Link } from "react-router-dom";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { CartContext } from "../../store/cartContext";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "./../../axios/axiosInstance";
+import { createConfigObj } from "./../../helper";
 
 const Header = ({ onSearch }) => {
   const { cartItems, fetchCartItems } = useContext(CartContext);
+  const [userName, setUserName] = useState("");
   const navigate = useNavigate();
+
+  const getUserName = async () => {
+    try {
+      const res = await axiosInstance.get("/api/v1/users", createConfigObj());
+      setUserName(res.data.data.user.toLowerCase());
+    } catch (err) {
+      setUserName("user");
+    }
+  };
 
   useEffect(() => {
     fetchCartItems();
   }, [fetchCartItems]);
+
+  useEffect(() => {
+    getUserName();
+  }, []);
 
   const noOfCartItems = cartItems
     .map((item) => item.quantity)
@@ -44,6 +60,9 @@ const Header = ({ onSearch }) => {
           }}
         />
       </form>
+      <div className="username-container">
+        <p className="username">Hello, {userName}</p>
+      </div>
       <div className="cart-logout-container">
         <div className="cart-icon-container">
           <Link to="/cart" className="link">

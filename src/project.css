@@ -30,7 +30,7 @@
 }
 
 .form-search {
-  width: 50%;
+  width: 60%;
   background-color: var(--white);
   display: grid;
   grid-template-columns: auto 1fr;
@@ -61,15 +61,26 @@
   outline: none;
 }
 
+.username-container .username {
+  color: var(--white);
+  font-size: 1.6rem;
+  font-weight: 700;
+  text-transform: capitalize;
+}
+
 .cart-logout-container {
   display: flex;
   flex-direction: row;
-  gap: 1.2rem;
+  gap: 2.4rem;
 }
 
 .cart-icon-container {
   padding: 1.2rem;
   position: relative;
+}
+
+.cart-icon-container:hover {
+  scale: 1.2;
 }
 
 .cart-icon {
