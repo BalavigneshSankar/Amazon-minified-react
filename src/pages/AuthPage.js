@@ -14,6 +14,7 @@ const formInitialState = {
 
 const AuthPage = () => {
   const [isLogIn, setIsLogIn] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [formDetails, setFormDetails] = useState(formInitialState);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -54,6 +55,7 @@ const AuthPage = () => {
     try {
       e.preventDefault();
       setError(null);
+      setIsLoading(true);
       if (isLogIn) {
         await authRequest("/api/v1/users/login", {
           email: formDetails.email,
@@ -65,6 +67,7 @@ const AuthPage = () => {
     } catch (err) {
       setError(err.message);
     }
+    setIsLoading(false);
   };
 
   return (
@@ -125,7 +128,7 @@ const AuthPage = () => {
               </div>
             )}
             <button type="submit" className="btn-auth--primary">
-              Continue
+              {isLoading ? "Loading..." : isLogIn ? "Login" : "Sign up"}
             </button>
           </form>
           <div className="devider">
