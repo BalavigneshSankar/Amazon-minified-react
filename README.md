@@ -11,7 +11,7 @@ Frontend of the Full Stack Amazon minified site.
 
 ![Amazon-minified-Products screen](https://github.com/BalavigneshSankar/Amazon-minified-react/blob/master/screenshots/Products%20page.png)
 
-![Amazon-minified-Cart screen]{https://github.com/BalavigneshSankar/Amazon-minified-react/blob/master/screenshots/Cart%20page.png}
+![Amazon-minified-Cart screen](https://github.com/BalavigneshSankar/Amazon-minified-react/blob/master/screenshots/Cart%20page.png)
 
 ## Features
 -  User authentication
