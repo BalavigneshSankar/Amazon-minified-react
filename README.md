@@ -19,3 +19,5 @@ Frontend of the Full Stack Amazon minified site.
 -  Filter
 -  Cart
 
+## Reference
+[Backend of the Full Stack Amazon minified site](https://github.com/BalavigneshSankar/Amazon-minified-node.js)
